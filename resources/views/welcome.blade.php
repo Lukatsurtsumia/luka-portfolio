@@ -9,14 +9,14 @@
     {{-- The card ---------------------------------------------------------- --}}
     <section id="work" class="scroll-mt-20 px-5 py-8 sm:px-8">
         <div class="mx-auto max-w-6xl">
-            <div class="flex flex-col gap-3 border-b border-white/8 pb-8 sm:flex-row sm:items-end sm:justify-between">
+            <div class="flex flex-col gap-3 border-b border-white/8 pb-8 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
                 <div>
                     <p class="eyebrow">{{ __('Tonight on the card') }}</p>
                     <h2 class="display mt-3 text-[clamp(2rem,6vw,3.5rem)]">
                         {{ __('The') }} <span class="text-[var(--color-gold)]">{{ __('Work') }}</span>
                     </h2>
                 </div>
-                <p class="max-w-sm text-sm text-[var(--color-bone-dim)]">
+                <p class="mx-auto max-w-sm text-sm text-[var(--color-bone-dim)] sm:mx-0">
                     {{ __('Four applications, all deployed and reachable. Two were built for paying clients in Nice.') }}
                 </p>
             </div>
@@ -30,13 +30,15 @@
     {{-- How I work --------------------------------------------------------- --}}
     <section class="px-5 py-16 sm:px-8 lg:py-24">
         <div class="mx-auto max-w-6xl">
-            <p class="eyebrow">{{ __('Approach') }}</p>
-            <h2 class="display mt-3 text-[clamp(1.75rem,5vw,3rem)]">
-                {{ __('How I') }} <span class="text-[var(--color-gold)]">{{ __('work') }}</span>
-            </h2>
-            <p class="mt-4 max-w-2xl leading-relaxed text-[var(--color-bone-dim)]">
-                {{ __('What I bring to a Laravel team, and what I am responsible for on the projects above.') }}
-            </p>
+            <div class="text-center lg:text-left">
+                <p class="eyebrow">{{ __('Approach') }}</p>
+                <h2 class="display mt-3 text-[clamp(1.75rem,5vw,3rem)]">
+                    {{ __('How I') }} <span class="text-[var(--color-gold)]">{{ __('work') }}</span>
+                </h2>
+                <p class="mx-auto mt-4 max-w-2xl leading-relaxed text-[var(--color-bone-dim)] lg:mx-0">
+                    {{ __('What I bring to a Laravel team, and what I am responsible for on the projects above.') }}
+                </p>
+            </div>
 
             <div class="mt-10 grid gap-px overflow-hidden border border-white/8 bg-white/8 md:grid-cols-3">
                 @foreach ($principles as $principle)

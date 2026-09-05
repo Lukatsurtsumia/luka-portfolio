@@ -1,4 +1,4 @@
-@props(['project', 'index' => 0])
+@props(['project', 'index' => 0, 'last' => false])
 
 @php
     $billing = match ($index) {
@@ -24,14 +24,16 @@
      the title and details share one column beside the screenshot. The wrapper
      is `display: contents` on mobile so its children can be ordered by the
      parent grid, and becomes a normal column at lg. --}}
-<article class="reveal border-t border-[var(--color-gold)]/20 pt-12 pb-14 first:border-t-0 first:pt-0 lg:border-white/10 lg:py-20">
+<article class="reveal pt-12 pb-14 first:pt-0 lg:py-20">
     <div class="grid gap-6 lg:grid-cols-2 lg:items-center lg:gap-14">
 
         <div class="contents lg:block {{ $flip ? 'lg:order-1' : 'lg:order-2' }}">
 
-            {{-- Title block: first thing read on mobile --}}
-            <header class="order-1">
-                <div class="flex flex-wrap items-center gap-2">
+            {{-- Title block: first thing read on mobile, centred there so the
+                 project announces itself; left-aligned beside the screenshot
+                 from lg up. --}}
+            <header class="order-1 text-center lg:text-left">
+                <div class="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
                     <p class="eyebrow">{{ $billing }}</p>
                     <span class="text-[var(--color-bone-dim)]/40">/</span>
                     <p class="eyebrow eyebrow-dim">{{ $project['year'] }}</p>
@@ -43,7 +45,7 @@
 
                 <p class="mt-2 text-base text-[var(--color-bone)]/80">{{ __($project['subtitle']) }}</p>
 
-                <div class="mt-4 flex flex-wrap gap-2">
+                <div class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
                     <span class="badge {{ $kindBadge[0] }}">{{ $kindBadge[1] }}</span>
                     @if ($project['status'] === 'live')
                         <span class="badge badge-live">{{ __('Live') }}</span>
@@ -139,4 +141,14 @@
             </div>
         </div>
     </div>
+
+    {{-- End of bout. A clear ruled break so one project never bleeds into the
+         next, especially on mobile where the cards stack. --}}
+    @unless ($last)
+        <div class="mt-14 flex items-center gap-4 lg:mt-20" aria-hidden="true">
+            <span class="h-px flex-1 bg-gradient-to-r from-transparent to-[var(--color-gold)]/55"></span>
+            <span class="h-1.5 w-1.5 rotate-45 bg-[var(--color-gold)]/70"></span>
+            <span class="h-px flex-1 bg-gradient-to-l from-transparent to-[var(--color-gold)]/55"></span>
+        </div>
+    @endunless
 </article>

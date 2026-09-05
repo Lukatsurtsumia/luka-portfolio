@@ -15,7 +15,7 @@
             <div class="grid gap-0 lg:grid-cols-[1fr_0.9fr]">
 
                 {{-- Description --}}
-                <div class="order-2 px-6 py-10 sm:px-10 lg:order-1 lg:py-14">
+                <div class="order-2 px-6 py-10 text-center sm:px-10 lg:order-1 lg:py-14 lg:text-left">
                     <p class="eyebrow">{{ __('Exhibition') }}</p>
 
                     <h2 class="display mt-3 text-[clamp(2rem,6vw,3.5rem)]">
@@ -26,13 +26,13 @@
                         {{ __($showcase['subtitle']) }}
                     </p>
 
-                    <hr class="rule-gold my-7 max-w-xs">
+                    <hr class="rule-gold mx-auto my-7 max-w-xs lg:mx-0">
 
-                    <p class="max-w-lg leading-relaxed text-[var(--color-bone-dim)]">
+                    <p class="mx-auto max-w-lg text-left leading-relaxed text-[var(--color-bone-dim)] lg:mx-0">
                         {{ __($showcase['body']) }}
                     </p>
 
-                    <div class="mt-7 flex flex-wrap gap-1.5">
+                    <div class="mt-7 flex flex-wrap justify-center gap-1.5 lg:justify-start">
                         @foreach ($showcase['stack'] as $tech)
                             <span class="tag">{{ $tech }}</span>
                         @endforeach

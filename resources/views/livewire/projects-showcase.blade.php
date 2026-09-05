@@ -1,6 +1,6 @@
 <div>
     {{-- Filter by what the work actually was, not by technology --}}
-    <div class="flex flex-wrap gap-2 py-8">
+    <div class="flex flex-wrap justify-center gap-2 py-8 lg:justify-start">
         <button
             type="button"
             wire:click="setKind('all')"
@@ -30,7 +30,12 @@
 
     <div wire:loading.class="opacity-40" wire:target="setKind" class="transition-opacity duration-200">
         @forelse ($projects as $project)
-            <x-fight-card :project="$project" :index="$loop->index" wire:key="project-{{ $project['id'] }}" />
+            <x-fight-card
+                :project="$project"
+                :index="$loop->index"
+                :last="$loop->last"
+                wire:key="project-{{ $project['id'] }}"
+            />
         @empty
             <p class="py-16 text-center text-[var(--color-bone-dim)]">{{ __('Nothing here yet.') }}</p>
         @endforelse
