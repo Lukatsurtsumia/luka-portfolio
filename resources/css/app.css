@@ -3,111 +3,358 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+/*
+|--------------------------------------------------------------------------
+| Fight card design system
+|--------------------------------------------------------------------------
+| Boxing-poster identity: ink ground, bone type, gold rules, one red accent.
+| Screenshots are the brightest thing on the page - everything else recedes.
+*/
+
 @theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-display: 'Anton', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
 
-    --color-base: #09090b;
-    --color-glow-emerald: #10b981;
-    --color-glow-indigo: #6366f1;
+    --color-ink: #0a0a0b;
+    --color-ink-2: #101012;
+    --color-ink-3: #17171a;
+    --color-bone: #f2ede3;
+    --color-bone-dim: #a8a29a;
+    --color-gold: #e0b64a;
+    --color-gold-deep: #a97f22;
+    --color-blood: #d92d20;
 }
 
 @layer base {
     html {
         color-scheme: dark;
+        scroll-behavior: smooth;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+        }
     }
 
     body {
-        @apply bg-[#09090b] text-zinc-100 antialiased;
+        background-color: var(--color-ink);
+        color: var(--color-bone);
+        -webkit-font-smoothing: antialiased;
     }
 
     ::selection {
-        background-color: color-mix(in oklab, var(--color-glow-emerald) 30%, transparent);
-        @apply text-emerald-50;
+        background-color: color-mix(in oklab, var(--color-gold) 35%, transparent);
+        color: #fff;
     }
 
     ::-webkit-scrollbar {
-        @apply w-2;
+        width: 10px;
     }
 
     ::-webkit-scrollbar-track {
-        @apply bg-[#09090b];
+        background: var(--color-ink);
     }
 
     ::-webkit-scrollbar-thumb {
-        @apply rounded-full bg-zinc-700 hover:bg-zinc-600;
+        background: #2a2a2e;
+        border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #3a3a40;
     }
 
     [x-cloak] {
         display: none !important;
     }
+
+    :focus-visible {
+        outline: 2px solid var(--color-gold);
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
 }
 
 @layer components {
-    .glass-card {
-        @apply rounded-2xl border border-white/10 bg-white/[0.03] shadow-2xl backdrop-blur-xl;
+    /* Poster typography ------------------------------------------------- */
+    .display {
+        font-family: var(--font-display);
+        font-weight: 400;
+        letter-spacing: 0.01em;
+        line-height: 0.88;
+        text-transform: uppercase;
     }
 
-    .accent-gradient-text {
-        @apply bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent;
+    /* Small caps label above a block - the "ROUND 1" / "MAIN EVENT" tag */
+    .eyebrow {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--color-gold);
     }
 
-    .accent-glow {
-        @apply pointer-events-none absolute rounded-full blur-3xl;
+    .eyebrow-dim {
+        color: color-mix(in oklab, var(--color-bone) 45%, transparent);
     }
 
-    .tilt-card {
-        transform-style: preserve-3d;
-        will-change: transform;
-        transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    /* Panels ------------------------------------------------------------ */
+    .panel {
+        background: linear-gradient(180deg, var(--color-ink-2), var(--color-ink));
+        border: 1px solid color-mix(in oklab, var(--color-bone) 10%, transparent);
+        border-radius: 2px;
     }
 
-    .glow-badge {
-        @apply relative inline-flex h-2 w-2 rounded-full bg-emerald-500;
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    .panel-gold {
+        border-color: color-mix(in oklab, var(--color-gold) 30%, transparent);
+        box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-gold) 8%, transparent) inset;
+    }
+
+    /* The double hairline rule that separates poster blocks */
+    .rule-gold {
+        border: 0;
+        height: 3px;
+        background:
+            linear-gradient(var(--color-gold), var(--color-gold)) top / 100% 1px no-repeat,
+            linear-gradient(color-mix(in oklab, var(--color-gold) 35%, transparent),
+                color-mix(in oklab, var(--color-gold) 35%, transparent)) bottom / 100% 1px no-repeat;
+    }
+
+    /* Tale of the tape --------------------------------------------------- */
+    .tape {
+        display: grid;
+        border-top: 1px solid color-mix(in oklab, var(--color-gold) 28%, transparent);
+        border-bottom: 1px solid color-mix(in oklab, var(--color-gold) 28%, transparent);
+    }
+
+    .tape-cell {
+        padding: 0.875rem 1rem;
+        border-right: 1px solid color-mix(in oklab, var(--color-bone) 8%, transparent);
+    }
+
+    .tape-cell:last-child {
+        border-right: 0;
+    }
+
+    .tape-value {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        line-height: 1;
+        color: var(--color-bone);
+        text-transform: uppercase;
+    }
+
+    .tape-label {
+        margin-top: 0.3rem;
+        font-size: 0.625rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-bone-dim);
+    }
+
+    /* Badges ------------------------------------------------------------- */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.25rem 0.625rem;
+        font-size: 0.625rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        border: 1px solid;
+        border-radius: 2px;
+    }
+
+    .badge-client {
+        color: var(--color-gold);
+        border-color: color-mix(in oklab, var(--color-gold) 45%, transparent);
+        background: color-mix(in oklab, var(--color-gold) 10%, transparent);
+    }
+
+    .badge-product {
+        color: #f87171;
+        border-color: color-mix(in oklab, var(--color-blood) 50%, transparent);
+        background: color-mix(in oklab, var(--color-blood) 12%, transparent);
+    }
+
+    .badge-learning {
+        color: var(--color-bone-dim);
+        border-color: color-mix(in oklab, var(--color-bone) 18%, transparent);
+        background: color-mix(in oklab, var(--color-bone) 5%, transparent);
+    }
+
+    .badge-live {
+        color: #4ade80;
+        border-color: color-mix(in oklab, #22c55e 45%, transparent);
+        background: color-mix(in oklab, #22c55e 12%, transparent);
+    }
+
+    .tag {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.6875rem;
+        color: var(--color-bone-dim);
+        border: 1px solid color-mix(in oklab, var(--color-bone) 12%, transparent);
+        border-radius: 2px;
+    }
+
+    /* Buttons ------------------------------------------------------------ */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.25rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        transition: transform 0.15s ease, background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn:active {
+        transform: translateY(1px);
+    }
+
+    .btn-gold {
+        background: var(--color-gold);
+        color: #17140b;
+    }
+
+    .btn-gold:hover {
+        background: #eec96b;
+    }
+
+    .btn-ghost {
+        border-color: color-mix(in oklab, var(--color-bone) 22%, transparent);
+        color: var(--color-bone);
+    }
+
+    .btn-ghost:hover {
+        border-color: var(--color-gold);
+        color: var(--color-gold);
+    }
+
+    /* Browser chrome around a screenshot ---------------------------------- */
+    .browser {
+        border: 1px solid color-mix(in oklab, var(--color-bone) 14%, transparent);
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--color-ink-3);
+        box-shadow: 0 30px 70px -25px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .browser-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        background: #1c1c20;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .browser-dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 9999px;
+    }
+
+    .browser-url {
+        flex: 1;
+        margin-left: 0.5rem;
+        padding: 0.1875rem 0.625rem;
+        font-size: 0.625rem;
+        color: var(--color-bone-dim);
+        background: #0f0f12;
+        border-radius: 9999px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .phone {
+        border: 4px solid #1c1c20;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.95);
+        background: #000;
     }
 }
 
 @layer utilities {
-    .bg-grid {
-        background-image:
-            linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-        background-size: 44px 44px;
-        mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    /* Paper grain so the ink ground is not a flat digital black */
+    .grain::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.5;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
     }
 
-    .bg-grid-animated {
-        animation: grid-drift 24s linear infinite;
+    .vignette {
+        background: radial-gradient(ellipse 90% 60% at 50% 0%, rgba(224, 182, 74, 0.07), transparent 70%);
     }
 
-    .radial-glow-emerald {
-        background: radial-gradient(circle, color-mix(in oklab, var(--color-glow-emerald) 22%, transparent), transparent 70%);
+    .duotone {
+        filter: grayscale(1) contrast(1.08) brightness(0.95);
     }
 
-    .radial-glow-indigo {
-        background: radial-gradient(circle, color-mix(in oklab, var(--color-glow-indigo) 22%, transparent), transparent 70%);
+    /* Poster portrait: the source has a bright studio backdrop, which would
+       otherwise sit on the black poster like a pasted passport photo. Crush it
+       to near-ink and feather every edge so the figure emerges from the page. */
+    .portrait {
+        overflow: hidden;
+        -webkit-mask-image:
+            radial-gradient(115% 88% at 50% 38%, #000 52%, transparent 92%);
+        mask-image:
+            radial-gradient(115% 88% at 50% 38%, #000 52%, transparent 92%);
     }
 
-    .animate-pulse-glow {
-        animation: pulse-glow 2.4s ease-in-out infinite;
+    .portrait-img {
+        filter: grayscale(1) contrast(1.28) brightness(0.62);
+        max-height: 30rem;
     }
-}
 
-@keyframes grid-drift {
-    from {
-        background-position: 0 0;
+    @media (min-width: 1024px) {
+        .portrait-img {
+            max-height: 26rem;
+        }
     }
-    to {
-        background-position: 44px 44px;
-    }
-}
 
-@keyframes pulse-glow {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+    .text-balance {
+        text-wrap: balance;
     }
-    50% {
-        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+
+    /* Scroll reveal - opt-in, and inert when reduced motion is requested */
+    .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.is-in {
+        opacity: 1;
+        transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .reveal {
+            opacity: 1;
+            transform: none;
+        }
     }
 }

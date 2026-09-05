@@ -1,91 +1,199 @@
 @php
-    $developer = config('portfolio.developer');
+    $dev = config('portfolio.developer');
     $projects = config('portfolio.projects');
 @endphp
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
-    <title>{{ $developer['name'] }} — CV</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ $dev['name'] }} - CV</title>
+    <meta name="robots" content="noindex">
     <style>
-        * { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: border-box; }
+
+        :root {
+            --gold: #a97f22;
+            --ink: #1a1a1a;
+            --muted: #5b5b5b;
+            --line: #dcdcdc;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            color: #18181b;
-            background: #ffffff;
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 48px 32px;
+            color: var(--ink);
+            background: #f4f4f2;
+            margin: 0;
+            padding: 24px 16px;
             line-height: 1.5;
+            font-size: 14px;
         }
-        h1 { font-size: 28px; margin: 0 0 4px; }
-        h2 {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #10b981;
-            border-bottom: 1px solid #e4e4e7;
-            padding-bottom: 6px;
-            margin: 32px 0 12px;
+
+        .sheet {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px 44px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
         }
-        .title { font-size: 16px; color: #4f46e5; font-weight: 600; margin: 0 0 12px; }
-        .meta { font-size: 13px; color: #52525b; margin-bottom: 4px; }
-        .summary { font-size: 14px; color: #3f3f46; }
-        .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-        .tag {
+
+        .toolbar {
+            max-width: 800px;
+            margin: 0 auto 16px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .toolbar button, .toolbar a {
+            font: inherit;
             font-size: 12px;
-            border: 1px solid #e4e4e7;
-            border-radius: 999px;
-            padding: 4px 10px;
-            color: #3f3f46;
+            padding: 8px 14px;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 3px;
         }
-        .project { margin-bottom: 16px; }
-        .project h3 { font-size: 15px; margin: 0 0 2px; }
-        .project .subtitle { font-size: 12px; color: #71717a; margin: 0 0 6px; }
-        .project p { font-size: 13px; color: #3f3f46; margin: 0 0 6px; }
-        .project a { font-size: 12px; color: #4f46e5; text-decoration: none; margin-right: 12px; }
+
+        header { display: flex; gap: 20px; align-items: center; }
+        header img { width: 84px; height: 84px; object-fit: cover; border-radius: 3px; filter: grayscale(1); }
+
+        h1 { font-size: 27px; margin: 0 0 2px; letter-spacing: -.01em; }
+        .role { font-size: 15px; color: var(--gold); font-weight: 600; margin: 0 0 8px; }
+        .meta { font-size: 12.5px; color: var(--muted); margin: 0; }
+        .meta a { color: var(--muted); }
+
+        h2 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            color: var(--gold);
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 5px;
+            margin: 26px 0 12px;
+        }
+
+        p.summary { margin: 0; font-size: 13.5px; }
+
+        .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 28px; }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+        .tag {
+            font-size: 11.5px;
+            border: 1px solid var(--line);
+            border-radius: 3px;
+            padding: 3px 8px;
+            color: #3d3d3d;
+        }
+
+        .project { margin-bottom: 15px; page-break-inside: avoid; }
+        .project-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .project h3 { font-size: 14.5px; margin: 0; }
+        .kind {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            padding: 2px 6px;
+            border: 1px solid var(--line);
+            border-radius: 2px;
+            color: var(--muted);
+        }
+        .kind-client { color: var(--gold); border-color: var(--gold); }
+        .project .sub { font-size: 12px; color: var(--muted); margin: 2px 0 4px; }
+        .project p { font-size: 12.8px; margin: 0 0 4px; }
+        .project .links { font-size: 11.5px; }
+        .project .links a { color: var(--gold); text-decoration: none; margin-right: 10px; }
+
+        ul.langs { list-style: none; padding: 0; margin: 0; font-size: 13px; }
+        ul.langs li { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 3px 0; }
+        ul.langs span:last-child { color: var(--muted); font-size: 12px; }
+
         @media print {
-            body { padding: 0; }
+            body { background: #fff; padding: 0; font-size: 11.5pt; }
+            .sheet { box-shadow: none; padding: 0; max-width: none; }
+            .toolbar { display: none; }
+            a { text-decoration: none; }
+            h2 { margin-top: 18px; }
         }
     </style>
 </head>
 <body>
-    <h1>{{ $developer['name'] }}</h1>
-    <p class="title">{{ $developer['title'] }}</p>
-    <p class="meta">{{ $developer['location'] }} · {{ $developer['email'] }} · {{ $developer['phone'] }}</p>
-    <p class="meta">{{ $developer['linkedin'] }} · {{ $developer['github'] }}</p>
-
-    <h2>Summary</h2>
-    <p class="summary">{{ $developer['summary'] }}</p>
-
-    <h2>Skills</h2>
-    <div class="tags">
-        @foreach ($developer['skills'] as $skill)
-            <span class="tag">{{ $skill }}</span>
-        @endforeach
+    <div class="toolbar">
+        <button type="button" onclick="window.print()">{{ __('Save as PDF') }}</button>
+        <a href="{{ route('home') }}">{{ __('Back to site') }}</a>
     </div>
 
-    <h2>Languages</h2>
-    <div class="tags">
-        @foreach ($developer['languages'] as $language)
-            <span class="tag">{{ $language }}</span>
-        @endforeach
-    </div>
-
-    <h2>Projects</h2>
-    @foreach ($projects as $project)
-        <div class="project">
-            <h3>{{ $project['title'] }}</h3>
-            <p class="subtitle">{{ $project['subtitle'] }}</p>
-            <p>{{ $project['description'] }}</p>
-            <div class="tags" style="margin-bottom: 6px;">
-                @foreach ($project['tags'] as $tag)
-                    <span class="tag">{{ $tag }}</span>
-                @endforeach
+    <div class="sheet">
+        <header>
+            <img src="{{ asset($dev['portrait_small']) }}" alt="{{ $dev['name'] }}">
+            <div>
+                <h1>{{ $dev['name'] }}</h1>
+                <p class="role">{{ $dev['title'] }}</p>
+                <p class="meta">{{ $dev['location'] }} &middot; {{ $dev['email'] }} &middot; {{ $dev['phone'] }}</p>
+                <p class="meta">
+                    <a href="{{ $dev['github'] }}">{{ str_replace('https://', '', $dev['github']) }}</a>
+                    &middot;
+                    <a href="{{ $dev['linkedin'] }}">LinkedIn</a>
+                </p>
             </div>
-            <a href="{{ $project['live_url'] }}">Live Site →</a>
-            <a href="{{ $project['github_url'] }}">GitHub →</a>
+        </header>
+
+        <h2>{{ __('Profile') }}</h2>
+        <p class="summary">{{ __($dev['summary']) }}</p>
+
+        <h2>{{ __('Technical skills') }}</h2>
+        <div class="tags">
+            @foreach ($dev['skills'] as $skill)
+                <span class="tag">{{ $skill['name'] }}</span>
+            @endforeach
         </div>
-    @endforeach
+
+        <h2>{{ __('Selected projects') }}</h2>
+        @foreach ($projects as $project)
+            <div class="project">
+                <div class="project-head">
+                    <h3>{{ $project['title'] }}</h3>
+                    <span class="kind {{ $project['kind'] === 'client' ? 'kind-client' : '' }}">
+                        {{ $project['kind'] === 'client' ? __('Client work') : ($project['kind'] === 'product' ? __('Own product') : __('Learning project')) }}
+                        &middot; {{ $project['year'] }}
+                    </span>
+                </div>
+                <p class="sub">{{ __($project['subtitle']) }}@if ($project['client']) &middot; {{ $project['client'] }}@endif</p>
+                <p>{{ __($project['summary']) }}</p>
+                <div class="tags" style="margin-bottom:5px;">
+                    @foreach (array_slice($project['stack'], 0, 6) as $tech)
+                        <span class="tag">{{ $tech }}</span>
+                    @endforeach
+                </div>
+                <p class="links">
+                    @if ($project['live_url'])
+                        <a href="{{ $project['live_url'] }}">{{ preg_replace('#^https?://#', '', rtrim($project['live_url'], '/')) }}</a>
+                    @endif
+                    @if ($project['github_url'])
+                        <a href="{{ $project['github_url'] }}">{{ __('Source code') }}</a>
+                    @endif
+                </p>
+            </div>
+        @endforeach
+
+        <div class="cols">
+            <div>
+                <h2>{{ __('Languages') }}</h2>
+                <ul class="langs">
+                    @foreach ($dev['languages'] as $language)
+                        <li><span>{{ __($language['name']) }}</span><span>{{ __($language['level']) }}</span></li>
+                    @endforeach
+                </ul>
+            </div>
+            <div>
+                <h2>{{ __('Infrastructure') }}</h2>
+                <p style="font-size:12.8px;margin:0;">
+                    {{ __('All projects self-deployed: Docker images built and run on a Hetzner server via Coolify, Cloudflare DNS and TLS, MySQL, persistent volumes, verified nightly backups and cron.') }}
+                </p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -8,11 +8,11 @@ use Livewire\Component;
 
 class ProjectsShowcase extends Component
 {
-    public string $activeCategory = 'all';
+    public string $activeKind = 'all';
 
-    public function setCategory(string $category): void
+    public function setKind(string $kind): void
     {
-        $this->activeCategory = $category;
+        $this->activeKind = $kind;
     }
 
     #[Computed]
@@ -20,27 +20,30 @@ class ProjectsShowcase extends Component
     {
         $projects = collect(config('portfolio.projects'));
 
-        if ($this->activeCategory === 'all') {
-            return $projects;
+        if ($this->activeKind !== 'all') {
+            $projects = $projects->where('kind', $this->activeKind);
         }
 
-        return $projects->where('category', $this->activeCategory)->values();
+        // Featured work leads the card regardless of the active filter.
+        return $projects
+            ->sortByDesc(fn (array $project) => $project['featured'] ?? false)
+            ->values();
     }
 
+    /** Kind => count, so the filter buttons can show how much sits behind each. */
     #[Computed]
-    public function categories(): Collection
+    public function kinds(): Collection
     {
         return collect(config('portfolio.projects'))
-            ->pluck('category')
-            ->unique()
-            ->values();
+            ->countBy('kind')
+            ->sortKeys();
     }
 
     public function render()
     {
         return view('livewire.projects-showcase', [
             'projects' => $this->projects,
-            'categories' => $this->categories,
+            'kinds' => $this->kinds,
         ]);
     }
 }

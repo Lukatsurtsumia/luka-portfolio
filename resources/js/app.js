@@ -1,28 +1,50 @@
-document.addEventListener('alpine:init', () => {
-    Alpine.data('tiltCard', () => ({
-        rotateX: 0,
-        rotateY: 0,
+/**
+ * Scroll reveal.
+ *
+ * Elements marked .reveal fade up once as they enter the viewport. Anything
+ * already on screen at load is revealed immediately so the hero never flashes
+ * empty, and the whole thing is skipped when the visitor asks for less motion.
+ */
+function initReveal() {
+    const items = document.querySelectorAll('.reveal');
+    if (!items.length) return;
 
-        handleMove(event) {
-            const rect = event.currentTarget.getBoundingClientRect();
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('is-in'));
+        return;
+    }
 
-            this.rotateY = ((event.clientX - rect.left - centerX) / centerX) * 8;
-            this.rotateX = -((event.clientY - rect.top - centerY) / centerY) * 8;
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-in');
+                observer.unobserve(entry.target);
+            });
         },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
+    );
 
-        reset() {
-            this.rotateX = 0;
-            this.rotateY = 0;
-        },
-    }));
+    items.forEach((el) => observer.observe(el));
+}
 
-    Alpine.data('terminalToggle', () => ({
-        view: 'profile',
+document.addEventListener('DOMContentLoaded', initReveal);
 
-        show(view) {
-            this.view = view;
-        },
-    }));
+// Livewire swaps DOM on filter changes; re-arm the new nodes.
+document.addEventListener('livewire:navigated', initReveal);
+document.addEventListener('livewire:update', initReveal);
+
+/**
+ * Easter egg: press `~` for a terminal readout of the same data the page shows.
+ * Developers find it; recruiters never trip over it.
+ */
+document.addEventListener('keydown', (event) => {
+    if (event.key !== '~' || event.metaKey || event.ctrlKey || event.altKey) return;
+
+    const tag = document.activeElement?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+
+    const panel = document.getElementById('terminal-egg');
+    if (panel) panel.hidden = !panel.hidden;
 });
