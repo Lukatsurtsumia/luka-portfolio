@@ -25,6 +25,8 @@
         </div>
     </section>
 
+    <x-boxer-showcase />
+
     {{-- How I work --------------------------------------------------------- --}}
     <section class="px-5 py-16 sm:px-8 lg:py-24">
         <div class="mx-auto max-w-6xl">

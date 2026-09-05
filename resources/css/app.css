@@ -285,6 +285,31 @@
         text-overflow: ellipsis;
     }
 
+    /* 3D fighter stage ---------------------------------------------------
+       One status line, four states, driven entirely by data-state on the
+       stage so the JS only has to set an attribute. */
+    [data-boxer-stage] [data-boxer-idle],
+    [data-boxer-stage] [data-boxer-loading],
+    [data-boxer-stage] [data-boxer-ready],
+    [data-boxer-stage] [data-boxer-static] {
+        display: none;
+    }
+
+    [data-boxer-stage][data-state='idle'] [data-boxer-idle],
+    [data-boxer-stage][data-state='loading'] [data-boxer-loading],
+    [data-boxer-stage][data-state='ready'] [data-boxer-ready],
+    [data-boxer-stage][data-state='static'] [data-boxer-static] {
+        display: inline;
+    }
+
+    [data-boxer-stage][data-state='loading'] [data-boxer-loading] {
+        animation: boxer-pulse 1.4s ease-in-out infinite;
+    }
+
+    [data-boxer-3d] canvas {
+        display: block;
+    }
+
     .phone {
         border: 4px solid #1c1c20;
         border-radius: 18px;
@@ -357,4 +382,9 @@
             transform: none;
         }
     }
+}
+
+@keyframes boxer-pulse {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
 }

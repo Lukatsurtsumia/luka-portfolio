@@ -299,6 +299,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Showcase - the animated 3D fighter
+    |--------------------------------------------------------------------------
+    |
+    | Rendered live with three.js, loaded on demand when the section scrolls
+    | into view. Deliberately has no repository link: it is a reusable asset,
+    | not an open-source project.
+    |
+    */
+    'showcase' => [
+        'title' => '3D Boxer',
+        'subtitle' => 'A rigged, animated fighter running in the browser',
+        'body' => 'A rigged 3D character with a looping movement animation, rendered in real time with three.js and WebGL. The model is framed automatically from its own skeleton, so it fits any container without hand-tuning the camera, and the renderer pauses whenever it is off screen. Originally built as the hero of the Pugilist Club Niçois site, it is kept as a self-contained component ready to drop into the next sports project.',
+        'stack' => ['three.js', 'WebGL', 'FBX', 'Skeletal animation', 'JavaScript'],
+        'model' => 'models/hero-boxer.fbx',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | How I work - the three-panel proof section under the projects
     |--------------------------------------------------------------------------
     */

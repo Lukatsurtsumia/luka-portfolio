@@ -36,6 +36,57 @@ document.addEventListener('livewire:navigated', initReveal);
 document.addEventListener('livewire:update', initReveal);
 
 /**
+ * 3D fighter, loaded on demand.
+ *
+ * three.js, the FBX loader and a 1.9MB model are a lot to ask of a visitor who
+ * may never scroll that far, so nothing is fetched until the section is close
+ * to the viewport. Until then the mount shows a static poster frame.
+ *
+ * Visitors who ask for reduced motion keep the poster and never load any of it.
+ */
+function initBoxer3d() {
+    const mount = document.querySelector('[data-boxer-3d]');
+    if (!mount || mount.dataset.boxerReady === '1') return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        mount.closest('[data-boxer-stage]')?.setAttribute('data-state', 'static');
+        return;
+    }
+
+    const stage = mount.closest('[data-boxer-stage]');
+
+    const start = () => {
+        stage?.setAttribute('data-state', 'loading');
+        import('./boxer.js')
+            .then(({ initBoxer }) => initBoxer(mount))
+            .catch(() => stage?.setAttribute('data-state', 'static'));
+    };
+
+    mount.addEventListener('boxer:loaded', () => stage?.setAttribute('data-state', 'ready'));
+    mount.addEventListener('boxer:failed', () => stage?.setAttribute('data-state', 'static'));
+
+    if (!('IntersectionObserver' in window)) {
+        start();
+        return;
+    }
+
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                observer.disconnect();
+                start();
+            });
+        },
+        { rootMargin: '400px 0px' }
+    );
+
+    observer.observe(mount);
+}
+
+document.addEventListener('DOMContentLoaded', initBoxer3d);
+
+/**
  * Easter egg: press `~` for a terminal readout of the same data the page shows.
  * Developers find it; recruiters never trip over it.
  */
