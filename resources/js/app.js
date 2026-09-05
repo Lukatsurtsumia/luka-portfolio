@@ -5,35 +5,87 @@
  * already on screen at load is revealed immediately so the hero never flashes
  * empty, and the whole thing is skipped when the visitor asks for less motion.
  */
-function initReveal() {
-    const items = document.querySelectorAll('.reveal');
-    if (!items.length) return;
+let revealObserver = null;
 
+function revealAll() {
+    document.querySelectorAll('.reveal').forEach((el) => el.classList.add('is-in'));
+}
+
+/**
+ * Arm every .reveal element that is not yet revealed.
+ *
+ * Livewire re-renders the project list on each filter change and morphs the
+ * existing <article> in place, syncing its class attribute from the server
+ * markup - which does not contain `is-in`. The element is stripped back to
+ * opacity 0 without ever moving, so no new intersection event fires for it.
+ *
+ * So anything already within the viewport is revealed directly here, and only
+ * genuinely off-screen elements are handed to the observer. Re-observing an
+ * element the observer already watches is a no-op, so this is safe to call as
+ * often as the DOM changes.
+ */
+function scanReveal() {
+    if (!revealObserver) return;
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+
+    document.querySelectorAll('.reveal:not(.is-in)').forEach((el) => {
+        const rect = el.getBoundingClientRect();
+        const onScreen = rect.top < vh * 0.92 && rect.bottom > 0;
+
+        if (onScreen) {
+            el.classList.add('is-in');
+            revealObserver.unobserve(el);
+            return;
+        }
+
+        revealObserver.observe(el);
+    });
+}
+
+function initReveal() {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced || !('IntersectionObserver' in window)) {
-        items.forEach((el) => el.classList.add('is-in'));
+        revealAll();
+        // Anything Livewire inserts later must be visible too.
+        new MutationObserver(revealAll).observe(document.body, { childList: true, subtree: true });
         return;
     }
 
-    const observer = new IntersectionObserver(
+    revealObserver = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
                 if (!entry.isIntersecting) return;
                 entry.target.classList.add('is-in');
-                observer.unobserve(entry.target);
+                revealObserver.unobserve(entry.target);
             });
         },
         { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
     );
 
-    items.forEach((el) => observer.observe(el));
+    scanReveal();
+
+    let queued = false;
+    new MutationObserver(() => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+            queued = false;
+            scanReveal();
+        });
+    }).observe(document.body, {
+        childList: true,
+        subtree: true,
+        // Class changes matter as much as inserted nodes: when a filter returns
+        // the same number of cards, Livewire morphs them in place and only the
+        // class attribute changes - stripping `is-in` without touching the DOM
+        // tree. Watching childList alone misses exactly that case.
+        attributes: true,
+        attributeFilter: ['class'],
+    });
 }
 
 document.addEventListener('DOMContentLoaded', initReveal);
-
-// Livewire swaps DOM on filter changes; re-arm the new nodes.
-document.addEventListener('livewire:navigated', initReveal);
-document.addEventListener('livewire:update', initReveal);
+document.addEventListener('livewire:navigated', scanReveal);
 
 /**
  * 3D fighter, loaded on demand.

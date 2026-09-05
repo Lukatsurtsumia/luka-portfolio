@@ -24,7 +24,9 @@
      the title and details share one column beside the screenshot. The wrapper
      is `display: contents` on mobile so its children can be ordered by the
      parent grid, and becomes a normal column at lg. --}}
-<article class="reveal pt-12 pb-14 first:pt-0 lg:py-20">
+{{-- $attributes carries the wire:key through from the Livewire loop; without
+     it Livewire morphs these cards by position instead of identity. --}}
+<article {{ $attributes->merge(['class' => 'reveal pt-12 pb-14 first:pt-0 lg:py-20']) }}>
     <div class="grid gap-6 lg:grid-cols-2 lg:items-center lg:gap-14">
 
         <div class="contents lg:block {{ $flip ? 'lg:order-1' : 'lg:order-2' }}">

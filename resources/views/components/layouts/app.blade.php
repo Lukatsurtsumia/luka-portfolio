@@ -19,6 +19,11 @@
 
         <link rel="canonical" href="{{ url()->current() }}">
 
+        {{-- Set before first paint: the scroll-reveal styles are scoped to
+             html.js, so if scripting is unavailable the content stays visible
+             rather than sitting at opacity 0 forever. --}}
+        <script>document.documentElement.classList.add('js');</script>
+
         @fonts
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
