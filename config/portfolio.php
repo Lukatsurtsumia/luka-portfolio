@@ -181,7 +181,7 @@ return [
             'stack' => ['Laravel 13', 'PHP 8.4', 'Alpine.js', 'Tailwind CSS', 'Cloudflare Workers', 'Resend', 'Docker', 'Coolify'],
             'tags' => ['Laravel', 'Bilingual', 'GDPR', 'Docker'],
 
-            'live_url' => 'https://pcnboxe.com',
+            'live_url' => 'https://pugilistclubnicois.fr',
             'github_url' => 'https://github.com/Lukatsurtsumia/PCN_club',
             'repo_private' => false,
 
