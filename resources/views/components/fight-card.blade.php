@@ -29,11 +29,10 @@
 
         <div class="contents lg:block {{ $flip ? 'lg:order-1' : 'lg:order-2' }}">
 
-            {{-- Title block: first thing read on mobile, centred there so the
-                 project announces itself; left-aligned beside the screenshot
-                 from lg up. --}}
-            <header class="order-1 text-center lg:text-left">
-                <div class="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
+            {{-- Title block: first thing read on mobile, so the screenshot
+                 below it is never mistaken for the project above. --}}
+            <header class="order-1">
+                <div class="flex flex-wrap items-center gap-2">
                     <p class="eyebrow">{{ $billing }}</p>
                     <span class="text-[var(--color-bone-dim)]/40">/</span>
                     <p class="eyebrow eyebrow-dim">{{ $project['year'] }}</p>
@@ -45,7 +44,7 @@
 
                 <p class="mt-2 text-base text-[var(--color-bone)]/80">{{ __($project['subtitle']) }}</p>
 
-                <div class="mt-4 flex flex-wrap justify-center gap-2 lg:justify-start">
+                <div class="mt-4 flex flex-wrap gap-2">
                     <span class="badge {{ $kindBadge[0] }}">{{ $kindBadge[1] }}</span>
                     @if ($project['status'] === 'live')
                         <span class="badge badge-live">{{ __('Live') }}</span>
