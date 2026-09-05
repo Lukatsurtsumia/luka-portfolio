@@ -38,14 +38,15 @@
                 >
             </div>
 
-            {{-- Phone overlapping the corner: proof it is responsive --}}
-            <div class="phone absolute -bottom-8 {{ $flip ? '-left-2 lg:-left-8' : '-right-2 lg:-right-8' }} hidden w-28 sm:block lg:w-36">
+            {{-- Phone clipping the outer bottom corner: proof the site is
+                 responsive, without covering the desktop hero headline. --}}
+            <div class="phone absolute -bottom-10 {{ $flip ? '-right-3 lg:-right-10' : '-left-3 lg:-left-10' }} hidden w-24 sm:block lg:w-32">
                 <img
                     src="{{ asset($project['shots']['mobile']) }}"
                     alt="{{ $project['title'] }} - {{ __('mobile view') }}"
                     width="560" height="1212"
                     loading="lazy" decoding="async"
-                    class="block w-full"
+                    class="block h-52 w-full object-cover object-top lg:h-64"
                 >
             </div>
         </div>

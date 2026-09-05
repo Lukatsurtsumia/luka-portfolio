@@ -155,26 +155,26 @@ return [
 
             'problem' => 'A working club needed a site that brings in members, loads fast on a phone in the gym, and does not break French privacy rules - maintained by people who are not developers.',
 
-            'approach' => 'Laravel with no database at all. Content and the visitor counter are file-based, so there is nothing to administer, nothing to back up and nothing to break. Contact submissions post to a Cloudflare Worker that sends through Resend, keeping mail delivery off the origin server.',
+            'approach' => 'A Laravel application with a full French and English localisation layer, a consent gate that blocks third-party embeds until the visitor agrees, an enquiry pipeline that delivers contact requests to the club by email, and a session-authenticated admin view for visitor statistics. Content is file-based rather than database-backed, chosen to fit a brochure site maintained by non-technical volunteers.',
 
             'metrics' => [
-                ['value' => 'Live', 'label' => 'serving a real club'],
-                ['value' => 'FR / EN', 'label' => 'French-first bilingual'],
-                ['value' => '0', 'label' => 'databases to maintain'],
+                ['value' => 'Live', 'label' => 'in production for a Nice club'],
+                ['value' => 'FR / EN', 'label' => 'complete bilingual localisation'],
+                ['value' => 'GDPR', 'label' => 'consent-gated third-party embeds'],
             ],
 
             'decisions' => [
                 [
-                    'title' => 'No database, on purpose',
-                    'body' => 'A marketing site for a club does not need one. Dropping it removed a backup story, a migration story and an entire class of outage from a site nobody is paid to babysit.',
+                    'title' => 'Matching the architecture to the client',
+                    'body' => 'A brochure site for a volunteer-run club does not need a relational database, so content and the visitor counter are stored as files. That removed migrations, backups and a class of runtime failure from a site nobody is paid to monitor, and keeps hosting costs minimal. The same judgement led me the other way on BoxerOS and Azur Clean, where MySQL and Eloquent were the right fit.',
                 ],
                 [
-                    'title' => 'GDPR as a build constraint, not a banner',
-                    'body' => 'The cookie banner actually gates what it claims to: Google Maps and the third-party reviews widget do not load at all until consent. A banner that lets the trackers run anyway is worse than none.',
+                    'title' => 'Consent gating enforced in the markup, not just the banner',
+                    'body' => 'French privacy rules require consent before third-party tracking loads. Google Maps and the reviews widget are not rendered at all until the visitor accepts, rather than being loaded behind a banner that only looks compliant.',
                 ],
                 [
-                    'title' => 'Designing for the free tier failing',
-                    'body' => 'The reviews widget runs on a free plan with a monthly view cap. When it goes over, it renders nothing. The page watches the container and, if it is still empty after a few seconds, swaps in a static fallback - so the section never appears broken to a visitor.',
+                    'title' => 'Graceful degradation for a third-party widget',
+                    'body' => 'The reviews widget runs on a plan with a monthly view cap and renders nothing once exceeded. The page observes the container and substitutes a static fallback if it is still empty after a few seconds, so visitors never see an empty section.',
                 ],
             ],
 
