@@ -304,16 +304,16 @@ return [
     */
     'principles' => [
         [
-            'title' => 'I ship to production and keep it running',
-            'body' => 'Every project here is deployed on infrastructure I set up and maintain: Docker images, Coolify on a Hetzner server, Cloudflare DNS and TLS, persistent volumes, nightly verified backups, cron. Building it is half the work.',
+            'title' => 'Full-stack Laravel development',
+            'body' => 'I build complete applications in Laravel: relational schema design and migrations, Eloquent models and business logic, REST endpoints, and Blade, Livewire and Alpine.js interfaces styled with Tailwind CSS. I follow framework conventions and PSR standards so the codebase stays familiar to any Laravel developer joining it.',
         ],
         [
-            'title' => 'I build bilingual by default',
-            'body' => 'I work in Nice, so French-first with an English switch is the normal case, not a retrofit. I have shipped it three times, including catching the trap where one English word maps to two different French ones.',
+            'title' => 'Deployment and maintenance',
+            'body' => 'Every application shown here runs on infrastructure I configured and continue to maintain: Docker images deployed through Coolify on a Hetzner server, MySQL, Cloudflare DNS and TLS, persistent storage volumes, scheduled tasks and verified automated backups. I am comfortable owning an application after release, not only up to it.',
         ],
         [
-            'title' => 'I delete things',
-            'body' => 'An injury tracker for liability, an availability calendar because the client did not want it, an animated hero because it was wrong for the brand. Removing work I have already done is part of shipping something good.',
+            'title' => 'Working with clients and requirements',
+            'body' => 'I deliver French-first bilingual applications with full English localisation, working directly with business owners in Nice to turn their requirements into scope. I keep the work aligned with what the client actually needs, adjust when requirements change, and communicate clearly in English and French.',
         ],
     ],
 ];
