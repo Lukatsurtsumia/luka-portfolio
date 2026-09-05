@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portfolio_app
+    restart: unless-stopped
+    volumes:
+      - .:/var/www
+    ports:
+      - "8010:8000"
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  mysql:
+    image: mysql:8.0
+    container_name: portfolio_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: luka_portfolio
+      MYSQL_ROOT_PASSWORD: secret
+    ports:
+      - "3333:3306"

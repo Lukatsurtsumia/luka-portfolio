@@ -1,0 +1,58 @@
+<?php
+
+return [
+    'developer' => [
+        'name' => 'Luka Tsurtsumia',
+        'title' => 'Full-Stack PHP / Laravel Developer',
+        'location' => 'Nice, France',
+        'email' => 'lukatsurtsumia0@gmail.com',
+        'phone' => '07 72 88 55 79',
+        'linkedin' => 'https://www.linkedin.com/in/luka-tsurtsumia-921324206/',
+        'github' => 'https://github.com/Lukatsurtsumia',
+        'summary' => 'PHP/Laravel Developer with hands-on experience building full-stack applications, REST APIs, Docker environments, and AI integrations.',
+        'skills' => ['PHP', 'Laravel', 'MySQL', 'REST APIs', 'Alpine.js', 'Docker & Ubuntu', 'Tailwind CSS', 'AI Integration', 'Git/GitHub', 'JavaScript'],
+        'languages' => ['English', 'French', 'Georgian', 'Russian'],
+    ],
+    'projects' => [
+        [
+            'id' => 'boxeros',
+            'title' => 'BoxerOS',
+            'subtitle' => 'AI Fight-Camp Operating System',
+            'category' => 'ai',
+            'description' => 'Fight-camp OS featuring CORNER, an AI coach reading live training, weight logs, meals, and fight countdowns.',
+            'tags' => ['Laravel', 'AI Integration', 'Tailwind CSS', 'REST APIs'],
+            'live_url' => 'https://boxeros.app/',
+            'github_url' => 'https://github.com/Lukatsurtsumia/boxeros',
+        ],
+        [
+            'id' => 'pcnboxe',
+            'title' => 'Pugilist Club Niçois',
+            'subtitle' => 'Bilingual Boxing Club Platform',
+            'category' => 'laravel',
+            'description' => 'Bilingual site built with Laravel 13, Alpine.js, GDPR cookie consent, live Google reviews, admin analytics, Docker, and Coolify.',
+            'tags' => ['Laravel 13', 'Alpine.js', 'Docker', 'Coolify', 'Cloudflare'],
+            'live_url' => 'https://Pcnboxe.com',
+            'github_url' => 'https://github.com/Lukatsurtsumia/PCN_club',
+        ],
+        [
+            'id' => 'azur-clean',
+            'title' => 'Azur Clean Tinati',
+            'subtitle' => 'Cleaning Agency Platform',
+            'category' => 'laravel',
+            'description' => 'Bilingual marketing site featuring project galleries and custom forms. Deployed to Hetzner via Docker & Coolify.',
+            'tags' => ['Laravel', 'Tailwind CSS', 'Alpine.js', 'Hetzner', 'Docker'],
+            'live_url' => 'https://Tinati-agency.com',
+            'github_url' => 'https://github.com/Lukatsurtsumia/cleaning_agency',
+        ],
+        [
+            'id' => 'bookshop',
+            'title' => 'BookShop E-Commerce',
+            'subtitle' => 'Full-Stack E-Commerce Platform',
+            'category' => 'ecommerce',
+            'description' => 'Full-stack e-commerce platform with a point-based purchasing system, 500-point welcome bonus, user reviews, and ratings.',
+            'tags' => ['Laravel', 'MySQL', 'E-Commerce', 'REST APIs'],
+            'live_url' => 'https://laravel-bookshop.onrender.com',
+            'github_url' => 'https://github.com/Lukatsurtsumia/laravel-bookshop',
+        ],
+    ],
+];

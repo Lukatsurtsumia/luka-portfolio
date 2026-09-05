@@ -1,0 +1,113 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-base: #09090b;
+    --color-glow-emerald: #10b981;
+    --color-glow-indigo: #6366f1;
+}
+
+@layer base {
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-[#09090b] text-zinc-100 antialiased;
+    }
+
+    ::selection {
+        background-color: color-mix(in oklab, var(--color-glow-emerald) 30%, transparent);
+        @apply text-emerald-50;
+    }
+
+    ::-webkit-scrollbar {
+        @apply w-2;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply bg-[#09090b];
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply rounded-full bg-zinc-700 hover:bg-zinc-600;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+@layer components {
+    .glass-card {
+        @apply rounded-2xl border border-white/10 bg-white/[0.03] shadow-2xl backdrop-blur-xl;
+    }
+
+    .accent-gradient-text {
+        @apply bg-gradient-to-r from-emerald-400 to-indigo-400 bg-clip-text text-transparent;
+    }
+
+    .accent-glow {
+        @apply pointer-events-none absolute rounded-full blur-3xl;
+    }
+
+    .tilt-card {
+        transform-style: preserve-3d;
+        will-change: transform;
+        transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    }
+
+    .glow-badge {
+        @apply relative inline-flex h-2 w-2 rounded-full bg-emerald-500;
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    }
+}
+
+@layer utilities {
+    .bg-grid {
+        background-image:
+            linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    }
+
+    .bg-grid-animated {
+        animation: grid-drift 24s linear infinite;
+    }
+
+    .radial-glow-emerald {
+        background: radial-gradient(circle, color-mix(in oklab, var(--color-glow-emerald) 22%, transparent), transparent 70%);
+    }
+
+    .radial-glow-indigo {
+        background: radial-gradient(circle, color-mix(in oklab, var(--color-glow-indigo) 22%, transparent), transparent 70%);
+    }
+
+    .animate-pulse-glow {
+        animation: pulse-glow 2.4s ease-in-out infinite;
+    }
+}
+
+@keyframes grid-drift {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 44px 44px;
+    }
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    }
+}
