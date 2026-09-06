@@ -53,7 +53,7 @@
                     <div>
                         <p class="eyebrow">{{ __('Contact') }}</p>
                         <ul class="mt-3 space-y-2 text-sm">
-                            <li><a href="mailto:{{ $dev['email'] }}" class="text-[var(--color-gold)] underline-offset-4 hover:underline">{{ $dev['email'] }}</a></li>
+                            <li><x-mail-link class="text-[var(--color-gold)] underline-offset-4 hover:underline">{{ $dev['email'] }}</x-mail-link></li>
                             <li><a href="tel:{{ str_replace(' ', '', $dev['phone']) }}" class="text-[var(--color-bone-dim)] hover:text-[var(--color-bone)]">{{ $dev['phone'] }}</a></li>
                             <li><a href="{{ $dev['github'] }}" target="_blank" rel="noopener noreferrer" class="text-[var(--color-bone-dim)] hover:text-[var(--color-bone)]">GitHub</a></li>
                             <li><a href="{{ $dev['linkedin'] }}" target="_blank" rel="noopener noreferrer" class="text-[var(--color-bone-dim)] hover:text-[var(--color-bone)]">LinkedIn</a></li>

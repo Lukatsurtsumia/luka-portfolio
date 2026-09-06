@@ -78,14 +78,14 @@
 
                 {{-- The three ways to reach me --}}
                 <div class="mx-auto mt-10 grid max-w-4xl gap-3 sm:grid-cols-3">
-                    <a href="mailto:{{ $dev['email'] }}"
-                       class="group flex flex-col items-center gap-2 border border-white/10 bg-[var(--color-ink-2)] px-4 py-6 text-center transition hover:border-[var(--color-gold)]/50 hover:bg-white/[0.04]">
+                    <x-mail-link
+                        class="group flex flex-col items-center gap-2 border border-white/10 bg-[var(--color-ink-2)] px-4 py-6 text-center transition hover:border-[var(--color-gold)]/50 hover:bg-white/[0.04]">
                         <x-lucide-mail class="h-5 w-5 text-[var(--color-gold)]" />
                         <span class="tape-label">{{ __('Email') }}</span>
                         <span class="text-sm break-all text-[var(--color-bone)] transition group-hover:text-[var(--color-gold)]">
                             {{ $dev['email'] }}
                         </span>
-                    </a>
+                    </x-mail-link>
 
                     <a href="tel:{{ str_replace(' ', '', $dev['phone']) }}"
                        class="group flex flex-col items-center gap-2 border border-white/10 bg-[var(--color-ink-2)] px-4 py-6 text-center transition hover:border-[var(--color-gold)]/50 hover:bg-white/[0.04]">
@@ -105,14 +105,35 @@
 
                 {{-- Primary action, plus the two secondary ones --}}
                 <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-                    <a href="mailto:{{ $dev['email'] }}?subject={{ rawurlencode(__('Project enquiry')) }}"
-                       class="btn btn-gold">
+                    <x-mail-link class="btn btn-gold">
                         <x-lucide-send class="h-3.5 w-3.5" />
-                        {{ __('Send me an email') }}
-                    </a>
+                        {{ __('Write me on Gmail') }}
+                    </x-mail-link>
                     <a href="{{ route('cv') }}" class="btn btn-ghost">{{ __('Download CV') }}</a>
                     <a href="{{ $dev['linkedin'] }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">
                         LinkedIn
+                    </a>
+                </div>
+
+                {{-- Not everyone has a Gmail account, and some people prefer
+                     their own client - so the raw address stays one click away. --}}
+                <div class="mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-[var(--color-bone-dim)]">
+                    <button
+                        type="button"
+                        data-copy="{{ $dev['email'] }}"
+                        class="inline-flex items-center gap-1.5 transition hover:text-[var(--color-gold)]"
+                    >
+                        <x-lucide-copy class="h-3.5 w-3.5" />
+                        <span data-copy-idle>{{ __('Copy address') }}</span>
+                        <span data-copy-done hidden class="text-[var(--color-gold)]">{{ __('Copied') }}</span>
+                    </button>
+
+                    <a
+                        href="mailto:{{ $dev['email'] }}?subject={{ rawurlencode(__(config('portfolio.contact.subject'))) }}"
+                        class="inline-flex items-center gap-1.5 transition hover:text-[var(--color-gold)]"
+                    >
+                        <x-lucide-at-sign class="h-3.5 w-3.5" />
+                        {{ __('Use my own mail app') }}
                     </a>
                 </div>
 

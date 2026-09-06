@@ -49,7 +49,7 @@
                             <x-lucide-download class="h-3.5 w-3.5" />
                             {{ __('Download CV') }}
                         </a>
-                        <a href="mailto:{{ $dev['email'] }}" class="btn btn-ghost">{{ __('Get in touch') }}</a>
+                        <x-mail-link class="btn btn-ghost">{{ __('Get in touch') }}</x-mail-link>
                     </div>
                 </div>
 

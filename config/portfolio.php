@@ -299,6 +299,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Contact
+    |--------------------------------------------------------------------------
+    |
+    | Prefilled into the Gmail compose window so a visitor only has to write
+    | their message. Both strings go through __(), so they follow the site
+    | language.
+    |
+    */
+    'contact' => [
+        'subject' => 'Project or role enquiry',
+        'body' => "Hello Luka,\n\n",
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Showcase - the animated 3D fighter
     |--------------------------------------------------------------------------
     |

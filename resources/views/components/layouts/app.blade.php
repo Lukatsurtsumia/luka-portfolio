@@ -78,10 +78,9 @@
                 </div>
 
                 <div class="flex flex-wrap gap-4 text-xs font-semibold tracking-[0.16em] uppercase">
-                    <a href="mailto:{{ $dev['email'] }}"
-                       class="text-[var(--color-bone-dim)] transition hover:text-[var(--color-gold)]">
+                    <x-mail-link class="text-[var(--color-bone-dim)] transition hover:text-[var(--color-gold)]">
                         {{ __('Email') }}
-                    </a>
+                    </x-mail-link>
                     <a href="{{ $dev['github'] }}" target="_blank" rel="noopener noreferrer"
                        class="text-[var(--color-bone-dim)] transition hover:text-[var(--color-gold)]">
                         GitHub

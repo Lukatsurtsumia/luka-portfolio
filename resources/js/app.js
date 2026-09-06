@@ -88,6 +88,69 @@ document.addEventListener('DOMContentLoaded', initReveal);
 document.addEventListener('livewire:navigated', scanReveal);
 
 /**
+ * Copy-to-clipboard for the email address.
+ *
+ * Delegated from the document so it keeps working after Livewire re-renders.
+ * navigator.clipboard needs a secure context, so there is a execCommand
+ * fallback for plain http (a local build, or a preview over an IP address).
+ */
+function initCopy() {
+    document.addEventListener('click', async (event) => {
+        const button = event.target.closest('[data-copy]');
+        if (!button) return;
+
+        const value = button.dataset.copy;
+
+        // Try the modern API first, then fall through to the legacy one rather
+        // than giving up: navigator.clipboard rejects without user activation
+        // and on insecure origins, and the button should still work there.
+        let ok = false;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(value);
+                ok = true;
+            } catch {
+                ok = false;
+            }
+        }
+
+        if (!ok) {
+            try {
+                const field = document.createElement('textarea');
+                field.value = value;
+                field.setAttribute('readonly', '');
+                field.style.position = 'fixed';
+                field.style.top = '0';
+                field.style.opacity = '0';
+                document.body.appendChild(field);
+                field.select();
+                field.setSelectionRange(0, value.length);
+                ok = document.execCommand('copy');
+                document.body.removeChild(field);
+            } catch {
+                ok = false;
+            }
+        }
+
+        if (!ok) return;
+
+        const idle = button.querySelector('[data-copy-idle]');
+        const done = button.querySelector('[data-copy-done]');
+        if (!idle || !done) return;
+
+        idle.hidden = true;
+        done.hidden = false;
+        setTimeout(() => {
+            idle.hidden = false;
+            done.hidden = true;
+        }, 2000);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', initCopy);
+
+/**
  * 3D fighter, loaded on demand.
  *
  * three.js, the FBX loader and a 1.9MB model are a lot to ask of a visitor who
