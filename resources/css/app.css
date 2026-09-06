@@ -1,7 +1,13 @@
-@import 'tailwindcss';
+/* Sources are declared explicitly rather than auto-detected.
+   Auto-detection walks the project and skips whatever .gitignore excludes -
+   which means the output depends on files that are not in the Docker build
+   context, and the image ended up with a 69KB stylesheet scanned out of
+   vendor/ against 46KB locally. Naming the sources keeps the build identical
+   everywhere. */
+@import 'tailwindcss' source(none);
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../js/**/*.js';
 
 /*
 |--------------------------------------------------------------------------

@@ -1,0 +1,43 @@
+# Rebuilt inside the image, or irrelevant to it.
+.git
+.gitignore
+.github
+node_modules
+vendor
+public/build
+public/hot
+public/storage
+
+# Never bake secrets or local state into an image.
+.env
+.env.*
+!.env.example
+database/database.sqlite
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/debugbar
+
+# Laravel's discovered-package manifest is generated on the dev machine and
+# lists dev-only providers (Pail, Sail). Shipping it into a --no-dev image
+# makes the container fail at boot with "Class ... not found". Laravel
+# regenerates it on first run.
+bootstrap/cache/*
+
+# Capture intermediates: the site serves the .webp versions only.
+public/images/**/*.png
+
+# Tooling and docs that the runtime does not need.
+tests
+phpunit.xml
+.editorconfig
+.phpunit.result.cache
+.phpactor.json
+.vscode
+.idea
+.claude
+AGENTS.md
+CLAUDE.md
+README.md
+docker-compose.yml
