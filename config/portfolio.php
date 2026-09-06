@@ -214,7 +214,7 @@ return [
             'metrics' => [
                 ['value' => 'Live', 'label' => 'for a real Nice business'],
                 ['value' => 'FR / EN', 'label' => 'French-first bilingual'],
-                ['value' => '1', 'label' => 'feature deleted after client review'],
+                ['value' => 'First', 'label' => 'web presence for the company'],
             ],
 
             'decisions' => [

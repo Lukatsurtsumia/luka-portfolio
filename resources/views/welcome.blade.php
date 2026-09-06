@@ -9,16 +9,11 @@
     {{-- The card ---------------------------------------------------------- --}}
     <section id="work" class="scroll-mt-20 px-5 py-8 sm:px-8">
         <div class="mx-auto max-w-6xl">
-            <div class="flex flex-col gap-3 border-b border-white/8 pb-8 text-center sm:flex-row sm:items-end sm:justify-between sm:text-left">
-                <div>
-                    <p class="eyebrow">{{ __('Tonight on the card') }}</p>
-                    <h2 class="display mt-3 text-[clamp(2rem,6vw,3.5rem)]">
-                        {{ __('The') }} <span class="text-[var(--color-gold)]">{{ __('Work') }}</span>
-                    </h2>
-                </div>
-                <p class="mx-auto max-w-sm text-sm text-[var(--color-bone-dim)] sm:mx-0">
-                    {{ __('Four applications, all deployed and reachable. Two were built for paying clients in Nice.') }}
-                </p>
+            <div class="border-b border-white/8 pb-8 text-center sm:text-left">
+                <p class="eyebrow">{{ __('Tonight on the card') }}</p>
+                <h2 class="display mt-3 text-[clamp(2rem,6vw,3.5rem)]">
+                    {{ __('The') }} <span class="text-[var(--color-gold)]">{{ __('Work') }}</span>
+                </h2>
             </div>
 
             <livewire:projects-showcase />
